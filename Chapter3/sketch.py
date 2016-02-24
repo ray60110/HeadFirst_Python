@@ -1,3 +1,4 @@
+import nester
 man=[]
 other=[]
 # creating 2 lists for saving the strings that about to print to outmandata/
@@ -29,9 +30,9 @@ except IOError:
 
 try:
     with open('man_data.txt','w') as out_man_data:
-        print(man, file=out_man_data)
+        nester.print_lol(man,fh=out_man_data)
     with open('other_data.txt','w') as out_other_data:
-        print(other, file=out_other_data)
+        nester.print_lol(other, fh=out_other_data)
 
 except IOError as err:
     print('can not save, please check'+str(err))
