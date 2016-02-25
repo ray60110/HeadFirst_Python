@@ -1,4 +1,4 @@
-import nester
+import pickle
 man=[]
 other=[]
 # creating 2 lists for saving the strings that about to print to outmandata/
@@ -6,7 +6,6 @@ other=[]
 
 try:
     data=open('sketch.txt', 'r')
-
 # using try & except to avoid IO/ Value error rather than expand codes.
 
     for each_line in data:
@@ -22,17 +21,14 @@ try:
 
         except ValueError:
             pass
-
     data.close()
-
-except IOError:
-    print('something is missing')
+except IOError as ioerr:
+    print('something is missing' , str(ioerr))
 
 try:
-    with open('man_data.txt','w') as out_man_data:
-        nester.print_lol(man,fh=out_man_data)
-    with open('other_data.txt','w') as out_other_data:
-        nester.print_lol(other, fh=out_other_data)
-
-except IOError as err:
-    print('can not save, please check'+str(err))
+    with open('man_data.txt','wb') as out_man_data:
+        pickle.dump(man, out_man_data)
+    with open('other_data.txt','wb') as out_other_data:
+        pickle.dump(other, out_other_data)
+except pickle.PickleError as perr:
+    print('PickleError', str(perr))
