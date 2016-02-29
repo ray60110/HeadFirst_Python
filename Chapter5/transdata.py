@@ -1,36 +1,44 @@
 def sanitize(time_string):
+# create a function to produce standardized time format. xx.xx
+# erase anyother marks wihin each value.
     if '-' in time_string:
         splitter= '-'
     elif ':' in time_string:
         splitter= ':'
     else:
-        return time_string
+        return(time_string)
     (mins, secs)= time_string.split(splitter)
     return(mins+'.'+secs)
 
-try:
-    with open('james.txt', 'r') as jam:
-        record= jam.readline()
-        james= record.strip().split(',')
-    with open('julie.txt', 'r') as jul:
-        record= jul.readline()
-        julie= record.strip().split(',')
-    with open('mikey.txt', 'r') as mike:
-        record= mike.readline()
-        mikey= record.strip().split(',')
-    with open('sarah.txt', 'r') as sara:
-        record= sara.readline()
-        sarah= record.strip().split(',')
+def create_data(source):
+    try:
+        with open(source, 'r') as file:
+            data= file.readline()
+        return(data.strip().split(','))
+    except IOError as ioerr:
+        print('file error'+ str(ioerr))
+        return None
 
-except IOError as ioerr:
-    print('error', str(ioerr))
+def adding_data(messy,clean):
+    for x in messy:
+        x= sanitize(x)
+        if x not in clean:
+            clean.append(x)
+    clean.sort()
+    three= clean[0:3]
+    return three
 
-clean_jam=[sanitize(each_jam) for each_jam in james]
-clean_jul=[sanitize(each_jul) for each_jul in julie]
-clean_mike=[sanitize(each_mike) for each_mike in mikey]
-clean_sara=[sanitize(each_sara) for each_sara in sarah]
+james= create_data('james.txt')
+julie= create_data('julie.txt')
+mikey= create_data('mikey.txt')
+sarah= create_data('sarah.txt')
 
-print(sorted(clean_jam), end='\n')
-print(sorted(clean_jul), end='\n')
-print(sorted(clean_mike), end='\n')
-print(sorted(clean_sara), end='\n')
+clean_jam=[]
+clean_jul=[]
+clean_mike=[]
+clean_sara=[]
+
+print(adding_data(james, clean_jam))
+print(adding_data(julie, clean_jul))
+print(adding_data(mikey, clean_mike))
+print(adding_data(sarah, clean_sara))
